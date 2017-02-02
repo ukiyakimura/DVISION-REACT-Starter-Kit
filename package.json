@@ -42,8 +42,8 @@
     "redux-thunk": "2.1.0"
   },
   "devDependencies": {
-    "axios": "0.15.3",
     "autoprefixer": "6.5.4",
+    "axios": "0.15.3",
     "babel-cli": "6.18.0",
     "babel-core": "6.20.0",
     "babel-eslint": "7.1.1",
@@ -74,8 +74,8 @@
     "html-webpack-plugin": "2.24.1",
     "isparta": "4.0.0",
     "istanbul": "0.4.4",
-    "json-loader": "0.5.4",
     "jsdom": "9.8.3",
+    "json-loader": "0.5.4",
     "jwt-decode": "^2.0.1",
     "mocha": "3.2.0",
     "mockdate": "2.0.1",
@@ -88,6 +88,7 @@
     "redux-devtools": "^3.2.0",
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.11",
+    "redux-form-material-ui": "4.1.2",
     "redux-immutable-state-invariant": "1.2.4",
     "replace": "0.3.0",
     "rimraf": "2.5.4",

@@ -7,9 +7,7 @@ import {
     USER_INFO_SUCCESS,
     USER_INFO,
     LOGOUT_USER,
-    GET_TABPANEL,
-    GET_SETUP_TABTITLES,
-} from './types';
+} from '../constants/actionTypes';
 
 const ROOT_URL = 'http://localhost:8000';
 

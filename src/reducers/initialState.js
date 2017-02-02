@@ -1,6 +1,9 @@
 export default {
     auth: {
-        userinfo:"",
-        authenticated: false,
+        authenticated: (localStorage.getItem('laravel_user_token') !== null),
+        userinfo: {
+            name: null
+        },
+        error:""
     }
 };

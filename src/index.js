@@ -22,14 +22,28 @@ const store = configureStore();
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
 
-render(
-<MuiThemeProvider>
-  <Provider store={store}>
-  <div>
-    <Router history={history} routes={routes} />
-    <DevTools />
-    </div>
-  </Provider>
-  </MuiThemeProvider>
-  , document.getElementById('app')
-);
+// Divide environment
+if (process.env.NODE_ENV === 'production') {
+    render(
+    <MuiThemeProvider>
+      <Provider store={store}>
+          <Router history={history} routes={routes} />
+      </Provider>
+    </MuiThemeProvider>
+      , document.getElementById('app')
+    );
+
+} else {
+    render(
+    <MuiThemeProvider>
+      <Provider store={store}>
+        <div>
+          <Router history={history} routes={routes} />
+          <DevTools />
+        </div>
+      </Provider>
+    </MuiThemeProvider>
+      , document.getElementById('app')
+    );
+}
+

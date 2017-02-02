@@ -1,70 +1,71 @@
 import React, { PropTypes } from 'react';
 import LoginForm from '../components/LoginForm';
 
+import { loginUser } from '../actions/auth.action';
+import { TextField } from 'redux-form-material-ui'
+import {reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
+
+const validation = values => {
+  const errors = {}
+  const requiredFields = [ 'email', 'password']
+  requiredFields.forEach(field => {
+    if (!values[ field ]) {
+      errors[ field ] = 'Required'
+    }
+  })
+  if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
+  }
+  return errors
+}
+
+const renderTextField = props => (
+  <TextField hintText={props.label}
+    floatingLabelText={props.label}
+    errorText={props.touched && props.error}
+    {...props}
+  />
+)
 
 class LoginPage extends React.Component {
-
-  /**
-   * Class constructor.
-   */
+  
   constructor(props) {
     super(props);
-
-    // set the initial component state
-    this.state = {
-      errors: {},
-      user: {
-        email: '',
-        password: ''
-      }
-    };
-
     this.processForm = this.processForm.bind(this);
-    this.changeUser = this.changeUser.bind(this);
   }
 
-  /**
-   * Process the form.
-   *
-   * @param {object} event - the JavaScript event object
-   */
-  processForm(event) {
-    // prevent default action. in this case, action is the form submission event
-    event.preventDefault();
-
-    console.log('email:', this.state.user.email);
-    console.log('password:', this.state.user.password);
+  processForm(data) {
+    console.log(data);
+    this.props.loginUser(data);
   }
 
-  /**
-   * Change the user object.
-   *
-   * @param {object} event - the JavaScript event object
-   */
-  changeUser(event) {
-    const field = event.target.name;
-    const user = this.state.user;
-    user[field] = event.target.value;
-
-    this.setState({
-      user
-    });
-  }
-
-  /**
-   * Render the component.
-   */
-  render() {
+  /* Render the component. */
+  render() {  
     return (
       <LoginForm
         onSubmit={this.processForm}
-        onChange={this.changeUser}
-        errors={this.state.errors}
-        user={this.state.user}
+        renderTextField={renderTextField}
+        validation={validation}
       />
     );
   }
 
 }
 
-export default LoginPage;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loginUser: (data) => {
+            dispatch(loginUser(data))
+        }
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        errorMessage: state.auth.error,
+        authenticated:state.auth.authenticated
+    }
+}
+
+export default LoginPage = connect(mapStateToProps, mapDispatchToProps)(LoginPage);

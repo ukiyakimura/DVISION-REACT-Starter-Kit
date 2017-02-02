@@ -4,8 +4,8 @@ import authReducer from './auth.reducer';
 import {reducer as form} from 'redux-form';
 
 const rootReducer = combineReducers({
-  form,
   auth: authReducer,
+  form,
   routing: routerReducer
 });
 

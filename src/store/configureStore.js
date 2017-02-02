@@ -34,14 +34,15 @@ function configureStoreDev(initialState) {
     thunk,
   ];
 
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
+  // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
+  const composeEnhancers = compose; // add support for Redux dev tools
   const store = createStore(
-    rootReducer, 
+    rootReducer,
     initialState,
-    DevTools.instrument(), 
     composeEnhancers(
-      applyMiddleware(...middlewares)
-    )
+      applyMiddleware(...middlewares),
+      DevTools.instrument()  
+    ),
   );
 
   if (module.hot) {

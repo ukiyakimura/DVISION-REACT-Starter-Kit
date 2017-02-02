@@ -1,57 +1,66 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
-import { Card, CardText } from 'material-ui/Card';
+import React, {PropTypes} from 'react';
+import {Link} from 'react-router';
+import {Card, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import {Field, reduxForm} from 'redux-form';
 
+/*
+  alternative version using Const: No need for render method
+  const LoginForm = props => {return(!!component inside!!)}
+*/
 
-const LoginForm = ({
-  onSubmit,
-  onChange,
-  errors,
-  user
-}) => (
-  <Card className="container">
-    <form action="/" onSubmit={onSubmit}>
-      <h2 className="card-heading">Login</h2>
+class LoginForm extends React.Component {
 
-      {errors.summary && <p className="error-message">{errors.summary}</p>}
+  constructor(props) {
+    super(props);
+  }
 
-      <div className="field-line">
-        <TextField
-          floatingLabelText="Email"
-          name="email"
-          errorText={errors.email}
-          onChange={onChange}
-          value={user.email}
-        />
-      </div>
+  render() {
+    /*
+      If using const instead of Class, this code below change into
+      const { handleSubmit, pristine, reset, submitting, submitData, renderTextField, validation } = props
+    */
+    
+    const {
+      handleSubmit,
+      pristine,
+      reset,
+      submitting,
+      renderTextField,
+      validation
+    } = this.props;
 
-      <div className="field-line">
-        <TextField
-          floatingLabelText="Password"
-          type="password"
-          name="password"
-          onChange={onChange}
-          errorText={errors.password}
-          value={user.password}
-        />
-      </div>
+    return (
+      <Card className="container">
+        <form onSubmit={handleSubmit}>
+          <h2 className="card-heading">Login</h2>
 
-      <div className="button-line">
-        <RaisedButton type="submit" label="Log in" primary />
-      </div>
+          <div className="field-line">
+            <Field name="email" component={renderTextField} label="Email"/>
+          </div>
 
-      <CardText>Don't have an account? <Link to={'/signup'}>Create one</Link>.</CardText>
-    </form>
-  </Card>
-);
+          <div className="field-line">
+            <Field name="password" component={renderTextField} label="Password"/>
+          </div>
 
-LoginForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+          <div className="button-line">
+            <RaisedButton
+              type="submit"
+              disabled={pristine || submitting}
+              label="Log in"
+              primary/>
+          </div>
+
+          <CardText>Don't have an account?
+            <Link to={'/signup'}>Create one</Link>.</CardText>
+        </form>
+      </Card>
+    )
+  }
 };
+
+LoginForm.propTypes = {   onSubmit: PropTypes.func.isRequired, };
+
+LoginForm = reduxForm({form: 'LoginForm'})(LoginForm);
 
 export default LoginForm;
