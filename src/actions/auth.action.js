@@ -31,8 +31,8 @@ export function loginUser(data){
 }
 
 export function logoutUser() {
+    console.log("logout");
     localStorage.removeItem('laravel_user_token');
-
     return { type: LOGOUT_USER };
 }
 

@@ -2,13 +2,13 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import {Card, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import {Field, reduxForm} from 'redux-form';
-
+import { Field, reduxForm } from 'redux-form';
+import validate from './helper/LoginValidation';
+import renderTextField from './helper/renderTextField';
 /*
   alternative version using Const: No need for render method
   const LoginForm = props => {return(!!component inside!!)}
 */
-
 class LoginForm extends React.Component {
 
   constructor(props) {
@@ -21,14 +21,7 @@ class LoginForm extends React.Component {
       const { handleSubmit, pristine, reset, submitting, submitData, renderTextField, validation } = props
     */
     
-    const {
-      handleSubmit,
-      pristine,
-      reset,
-      submitting,
-      renderTextField,
-      validation
-    } = this.props;
+    const { handleSubmit, pristine, reset, submitting } = this.props;
 
     return (
       <Card className="container">
@@ -48,7 +41,7 @@ class LoginForm extends React.Component {
               type="submit"
               disabled={pristine || submitting}
               label="Log in"
-              primary/>
+            />
           </div>
 
           <CardText>Don't have an account?
@@ -59,8 +52,12 @@ class LoginForm extends React.Component {
   }
 };
 
+// Check onSubmit is required
 LoginForm.propTypes = {   onSubmit: PropTypes.func.isRequired, };
 
-LoginForm = reduxForm({form: 'LoginForm'})(LoginForm);
-
-export default LoginForm;
+/* 
+  Connect the form with redux-form in order to making handleSubmit, 
+  submitting, pristine, reset avaiable in this page 
+*/
+// console.log(errors);
+export default reduxForm({form: 'LoginForm', validate})(LoginForm);
