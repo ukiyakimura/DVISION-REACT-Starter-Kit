@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link, IndexLink } from 'react-router';
+import {browserHistory} from 'react-router';
 
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/auth.action';
@@ -27,10 +28,16 @@ class Login extends React.Component {
 }
 
 const Logged = (props) => {
-  const {logout} = props
+  let newProps = Object.assign({}, props);
+     delete newProps.logout;
+
+  const doLogout = () => {
+    props.logout().then(() => browserHistory.push('/'));
+  }
+
   return(
     <IconMenu
-      {...props}
+      {...newProps}
       iconButtonElement={
         <IconButton><MoreVertIcon /></IconButton>
       }
@@ -40,7 +47,7 @@ const Logged = (props) => {
       <MenuItem primaryText="Refresh" />
       <MenuItem primaryText="Help" />
       <MenuItem primaryText="Sign out" 
-        onTouchTap={logout}
+        onTouchTap={doLogout}
       />
     </IconMenu>
   )
@@ -49,10 +56,10 @@ const Logged = (props) => {
 Logged.muiName = 'IconMenu';
 
 class MUIAppBar extends React.Component {
-    
-  state = {
-    logged: (localStorage.getItem('laravel_user_token') !== null),
-  };
+  // why i don't use state as if option in iconElementRight, because it not realtime updated as the state in store update 
+  // state = {
+  //   logged: (this.props.authenticated),  
+  // };
 
   render() {
   // when user hover the title it would turn into pointer
@@ -62,24 +69,37 @@ class MUIAppBar extends React.Component {
       },
     };
     const { logoutUser } = this.props;
-
+    // console.log(this.state.logged);
     return (
       <div>
         <AppBar
           title={<span style={styles.title}><IndexLink to="/">D:Vision</IndexLink></span>}
-          iconElementRight={this.state.logged ? <Logged logout={logoutUser} /> : <Login />}
+          iconElementRight={this.props.authenticated ? <Logged logout={logoutUser} /> : <Login />}
         />  
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+function mapStateToProps(state) {
     return {
-        logoutUser: () => (
-            dispatch(logoutUser)
-        )
+        authenticated:state.auth.authenticated
     }
 }
 
-export default MUIAppBar =  connect(null, mapDispatchToProps)(MUIAppBar);
+// I'm using this format to make it return promise properly
+function mapDispatchToProps(dispatch) {
+    return {
+        logoutUser: logoutUser(dispatch)
+    };
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         logoutUser: () => (
+//             dispatch(logoutUser)
+//         ),
+//     }
+// }
+
+export default MUIAppBar =  connect(mapStateToProps, mapDispatchToProps)(MUIAppBar);

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwtdecode from 'jwt-decode';
 import {browserHistory} from 'react-router';
+import { push } from 'react-router-redux'
 import {
     AUTH_USER,
     AUTH_ERROR,
@@ -30,12 +31,18 @@ export function loginUser(data){
     }
 }
 
-export function logoutUser() {
-    console.log("logout");
-    localStorage.removeItem('laravel_user_token');
-    return { type: LOGOUT_USER };
-}
-
+export function logoutUser(dispatch){
+    return () => {
+        return new Promise((resolve) => { 
+            dispatch({
+                type    : LOGOUT_USER,
+            });
+            localStorage.removeItem('laravel_user_token');
+            console.log('Logout');
+            resolve();
+        })
+    }
+};
 
 export function registerUser({email,password}){
     return function(dispatch){

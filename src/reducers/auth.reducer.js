@@ -15,10 +15,11 @@ const authReducer = (state = initialState.auth, action) => {
            
         case AUTH_USER:
             return objectAssign({}, state, {authenticated: true});
+
+        case LOGOUT_USER :  
+            return Object.assign({}, state, {authenticated : false});
         
-        case LOGOUT_USER:
-            return objectAssign({}, state, {authenticated: false});
-         
+
         case AUTH_ERROR:
             return objectAssign({}, state, {error: action.payload});
     
