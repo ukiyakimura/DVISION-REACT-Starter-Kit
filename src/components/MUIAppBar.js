@@ -4,6 +4,9 @@ import {browserHistory} from 'react-router';
 
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/auth.action';
+import { toggleDrawerInAppBar } from '../actions/comp.action';
+
+import MUIDrawerAppBar from './MUIDrawerAppBar';
 
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -60,6 +63,14 @@ class MUIAppBar extends React.Component {
   // state = {
   //   logged: (this.props.authenticated),  
   // };
+  constructor(props) {
+    super(props);
+    this.doToggle = this.doToggle.bind(this);
+  }
+
+  doToggle = () => {
+    this.props.toggleDrawerInAppBar(!this.props.openDrawerStatus);
+  };
 
   render() {
   // when user hover the title it would turn into pointer
@@ -75,7 +86,13 @@ class MUIAppBar extends React.Component {
         <AppBar
           title={<span style={styles.title}><IndexLink to="/">D:Vision</IndexLink></span>}
           iconElementRight={this.props.authenticated ? <Logged logout={logoutUser} /> : <Login />}
+
+          onLeftIconButtonTouchTap={this.doToggle}
         />  
+        <MUIDrawerAppBar 
+          doToggle = {this.props.toggleDrawerInAppBar}
+          openDrawerStatus={this.props.openDrawerStatus} 
+        />
       </div>
     );
   }
@@ -83,14 +100,16 @@ class MUIAppBar extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        authenticated:state.auth.authenticated
+        authenticated: state.auth.authenticated,
+        openDrawerStatus: state.comp.openDrawerStatus
     }
 }
 
 // I'm using this format to make it return promise properly
 function mapDispatchToProps(dispatch) {
     return {
-        logoutUser: logoutUser(dispatch)
+        logoutUser: logoutUser(dispatch),
+        toggleDrawerInAppBar: (open) => dispatch(toggleDrawerInAppBar(open))
     };
 }
 

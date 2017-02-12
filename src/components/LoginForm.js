@@ -4,7 +4,7 @@ import {Card, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Field, reduxForm } from 'redux-form';
 import validate from './helper/LoginValidation';
-import renderTextField from './helper/renderTextField';
+import MUIFloatingTextField from './helper/MUIFloatingTextField';
 /*
   alternative version using Const: No need for render method
   const LoginForm = props => {return(!!component inside!!)}
@@ -29,11 +29,23 @@ class LoginForm extends React.Component {
           <h2 className="card-heading">Login</h2>
 
           <div className="field-line">
-            <Field name="email" component={renderTextField} label="Email"/>
+            <Field 
+              name="email" 
+              component={MUIFloatingTextField} 
+              label="Email" 
+              type="email" 
+              multiLine={false}
+            />
           </div>
 
           <div className="field-line">
-            <Field name="password" component={renderTextField} label="Password"/>
+            <Field 
+              name="password" 
+              component={MUIFloatingTextField} 
+              label="Password" 
+              type="password" 
+              multiLine={false}
+            />
           </div>
 
           <div className="button-line">
