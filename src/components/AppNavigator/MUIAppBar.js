@@ -3,8 +3,8 @@ import { Link, IndexLink } from 'react-router';
 import {browserHistory} from 'react-router';
 
 import { connect } from 'react-redux';
-import { logoutUser } from '../actions/auth.action';
-import { toggleDrawerInAppBar } from '../actions/comp.action';
+import { logoutUser } from '../../actions/auth.action';
+import { toggleDrawerInAppBar } from '../../actions/comp.action';
 
 import MUIDrawerAppBar from './MUIDrawerAppBar';
 
@@ -24,7 +24,6 @@ class Login extends React.Component {
     return (
       <FlatButton {...this.props} label="Login"
         containerElement={<Link to="/login">Setup</Link>}
-        linkButton={true}
       />
     );
   }

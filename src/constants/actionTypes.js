@@ -4,9 +4,15 @@ export const AUTH_ERROR = "AUTH_ERROR";
 export const AUTH_USER_INFO = "AUTH_USER_INFO";
 export const UNAUTH_USER = "LOGOUT_USER";
 
+
 // Handle Dynamic Component 
 export const TOGGLE_DRAWER_IN_APPBAR = "OPEN_DRAWER_IN_APPBAR";
-export const GET_SETUP_TAB_TITLES = "GET_SETUP_TAB_TITLES";
+export const FETCHING_TAB = "FETCHING_TAB";
+export const FETCHED_TAB = "FETCHED_TAB";
+export const FETCH_TAB_ERROR = "FETCH_TAB_ERROR";
 
-export const GET_PERIOD = "GET_PERIOD";
+// Handle Setup -> Period Component
+export const FETCHING_PERIOD = "FETCHING_PERIOD";
+export const FETCHED_PERIOD = "FETCHED_PERIOD";
+export const FETCH_PERIOD_ERROR = "FETCHED_PERIOD";
 

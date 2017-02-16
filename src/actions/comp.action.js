@@ -1,6 +1,8 @@
 import {
     TOGGLE_DRAWER_IN_APPBAR,
-    GET_SETUP_TAB_TITLES,
+    FETCHING_TAB,
+    FETCHED_TAB,
+    FETCH_TAB_ERROR
 } from '../constants/actionTypes';
 
 import axios from 'axios';
@@ -12,13 +14,17 @@ export function toggleDrawerInAppBar(open){
 
 export function getSetupTabTitles(category){
     return function(dispatch){
+        dispatch({type: FETCHING_TAB});
         axios.get(`${ROOT_URL}/api/component/getSetupTabTitles/${category}`,
         {
             headers:{authorization:`Bearer `+localStorage.getItem('laravel_user_token')}
         }).then(response => {
-            dispatch({type: GET_SETUP_TAB_TITLES,
+            dispatch({type: FETCHED_TAB,
                 payload: response.data.setupTabTitles
             });
-        });
+        })
+        // .catch(()=>{
+        //      dispatch({type: FETCH_ERROR});
+        // });
     }
 }

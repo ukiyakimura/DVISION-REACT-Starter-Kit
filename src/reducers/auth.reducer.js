@@ -15,7 +15,7 @@ const authReducer = (state = initialState.auth, action) => {
             return Object.assign({}, state, {error: action.payload});
     
         case AUTH_USER_INFO:
-            return Object.assign({}, state, {userinfo: action.payload.userInfo});
+            return Object.assign({}, state, {userInfo: action.payload.userInfo});
 
         case UNAUTH_USER :  
             return Object.assign({}, state, {authenticated : false});

@@ -5,10 +5,13 @@ import SwipeableViews from 'react-swipeable-views';
 import {connect} from 'react-redux';
 
 import {getPeriod} from '../actions/setup.action';
+import { createPeriod } from '../actions/setup.action';
 import { getSetupTabTitles } from '../actions/comp.action';
 
-import PeriodForm from '../components/PeriodForm';
-import PeriodTable from '../components/PeriodTable';
+import PeriodForm from '../components/SetupPage/PeriodForm';
+import PeriodTable from '../components/SetupPage/PeriodTable';
+
+import Loader from 'react-loader';
 
 const styles = {
   headline: {
@@ -25,8 +28,12 @@ const styles = {
 class SetupPage extends React.Component {
 
   componentWillMount(){
-    this.props.getPeriod('1');
-    this.props.getSetupTabTitles('Setup');
+    if(this.props.setupTabTitles[0] == null){
+      this.props.getSetupTabTitles('Setup');
+    }
+    if(this.props.periodData.length < 2){ 
+      this.props.getPeriod('1');
+    }
   }
 
   constructor(props) {
@@ -43,38 +50,43 @@ class SetupPage extends React.Component {
   };
 
   render() {
+    const {loadedTab, loadedPeriod, setupTabTitles, periodData, createPeriod} = this.props;
     return (
       <div>
-        <Tabs // this one to render the tab titles
-          onChange={this.handleChange}
-          value={this.state.slideIndex}
-        >
-          {this.props.setupTabTitles.map((data, i) => 
-            <Tab label={data.tabTitle} value={i} key={i}/>
-          )}
-        </Tabs>
+        <Loader loaded={loadedTab}>
+          <Tabs // this one to render the tab titles
+            onChange={this.handleChange}
+            value={this.state.slideIndex}
+          >
+            {setupTabTitles.map((data, i) => 
+              <Tab label={data.tabTitle} value={i} key={i}/>
+            )}
+          </Tabs>
 
-        <SwipeableViews // this one to render each tab content
-          index={this.state.slideIndex}
-          onChangeIndex={this.handleChange}
-        >
-          {this.props.setupTabTitles.map((data, i) => {
-            if(data.tabTitle == 'Periodic'){
-              return(
-                <div style={styles.slide}>
-                    <PeriodForm />
-                    <PeriodTable periodData={this.props.periodData} />
-                </div>
-            )}else{
-              return(
-                <div style={styles.slide}>
-                    test2
-                </div>
-              )
+          <SwipeableViews // this one to render each tab content
+            index={this.state.slideIndex}
+            onChangeIndex={this.handleChange}
+          >
+            {setupTabTitles.map((data, i) => {
+              if(data.tabTitle == 'Periodic'){
+                return(
+                  <div style={styles.slide}>
+                    <Loader loaded={loadedPeriod}>
+                      <PeriodForm createPeriod={createPeriod} />
+                      <PeriodTable periodData={periodData} />
+                    </Loader>
+                  </div>
+              )}else{
+                return(
+                  <div style={styles.slide}>
+                      test2
+                  </div>
+                )
+              }
+              })         
             }
-            })         
-          }
-        </SwipeableViews>
+          </SwipeableViews>
+        </Loader>
       </div>
     );
   }
@@ -84,16 +96,21 @@ function mapStateToProps(state) {
     return {
         setupTabTitles: state.comp.setupTabTitles,
         periodData: state.setup.periodData,
+        loadedTab: !state.comp.api.isLoading,
+        loadedPeriod: !state.setup.api.isLoading
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        getSetupTabTitles:(category) => {
+            dispatch(getSetupTabTitles(category))
+        },
         getPeriod: (isActive) => {
             dispatch(getPeriod(isActive))
         },
-        getSetupTabTitles:(category) => {
-            dispatch(getSetupTabTitles(category))
+        createPeriod: (data) => {
+            dispatch(createPeriod(data))
         }
     }
 }

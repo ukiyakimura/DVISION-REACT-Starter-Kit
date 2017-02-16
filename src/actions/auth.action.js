@@ -39,7 +39,6 @@ export function logoutUser(dispatch){
                 type: UNAUTH_USER,
             });
             localStorage.removeItem('laravel_user_token');
-            console.log('Logout');
             resolve();
         })
     }

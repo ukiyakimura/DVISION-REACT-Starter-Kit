@@ -3,9 +3,9 @@ import TextField from 'material-ui/TextField';
 
 import { Field, reduxForm } from 'redux-form';
 import {Card, CardText} from 'material-ui/Card';
-import MUINormalTextField from './helper/MUINormalTextField';
-import MUIFloatingTextField from './helper/MUIFloatingTextField';
-import MUIHiddenTextField from './helper/MUIHiddenTextField';
+import MUINormalTextField from '../helper/MUINormalTextField';
+import MUIFloatingTextField from '../helper/MUIFloatingTextField';
+import MUIHiddenTextField from '../helper/MUIHiddenTextField';
 import { DatePicker } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -17,7 +17,7 @@ class PeriodForm extends React.Component {
     }
 
     processForm(data) {
-        console.log(data);
+        this.props.createPeriod(data);
     }
     render(){
 
@@ -32,6 +32,7 @@ class PeriodForm extends React.Component {
                                 component={MUIFloatingTextField} 
                                 label="Period Name" 
                                 multiLine= {false}
+                                type="text"
                             />
                         </div>
 
@@ -45,6 +46,7 @@ class PeriodForm extends React.Component {
                                     console.log('date changed ', value) // eslint-disable-line no-console
                                 }} 
                                 autoOk={true}
+                                DateTimeFormat={Intl.DateTimeFormat}
                             />
                         </div>
                         
@@ -58,6 +60,7 @@ class PeriodForm extends React.Component {
                                     console.log('date changed ', value) // eslint-disable-line no-console
                                 }}
                                 autoOk={true}
+                                DateTimeFormat={Intl.DateTimeFormat}
                             />
                         </div>
 
@@ -66,6 +69,7 @@ class PeriodForm extends React.Component {
                                 name="remark" 
                                 label="Remark" 
                                 component={MUIFloatingTextField} 
+                                type="text"
                             />
                         </div>
 
