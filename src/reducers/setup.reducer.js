@@ -13,7 +13,6 @@ const setupReducer = (state = initialState.setup, action) => {
             });
         
         case FETCHED_PERIOD:
-        console.log(state.periodData.length);
             if(state.periodData.length < 2){
                 return {...state, 
                     api: {
@@ -32,8 +31,6 @@ const setupReducer = (state = initialState.setup, action) => {
                     }, 
                     periodData: [...state.periodData, ...action.payload]}
             }
-    
-           
 
         case FETCH_PERIOD_ERROR:
             return Object.assign({}, state, {

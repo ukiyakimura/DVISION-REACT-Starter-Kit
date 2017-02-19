@@ -20,11 +20,11 @@ export default {
     },
     setup:{
         periodData: [{
-            periodName: null,
+            periodName: '',
             startDate: null,
             endDate: null,
-            remark: null,
-            isActive: null
+            remark: '',
+            isActive: ''
         }],
         api: {
             isLoading: false,

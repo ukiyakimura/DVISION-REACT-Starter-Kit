@@ -1,29 +1,13 @@
 import React from 'react';
-import {Tabs, Tab} from 'material-ui/Tabs';
-// From https://github.com/oliviertassinari/react-swipeable-views
-import SwipeableViews from 'react-swipeable-views';
 import {connect} from 'react-redux';
 
 import {getPeriod} from '../actions/setup.action';
 import { createPeriod } from '../actions/setup.action';
 import { getSetupTabTitles } from '../actions/comp.action';
 
+import MUITabs from '../components/SetupPage/MUITabs';
 import PeriodForm from '../components/SetupPage/PeriodForm';
 import PeriodTable from '../components/SetupPage/PeriodTable';
-
-import Loader from 'react-loader';
-
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
-  },
-  slide: {
-    padding: 10,
-  },
-};
 
 class SetupPage extends React.Component {
 
@@ -38,57 +22,33 @@ class SetupPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      slideIndex: 0,
-    };
+    this.processForm = this.processForm.bind(this);
+    this.onRowSelection = this.onRowSelection.bind(this);
   }
 
-  handleChange = (value) => {
-    this.setState({
-      slideIndex: value,
-    });
-  };
+  processForm(data) {
+    this.props.createPeriod(data);
+  }
+
+  onRowSelection(key) {
+    console.log(key, this.props.periodData[key]);
+  }
 
   render() {
-    const {loadedTab, loadedPeriod, setupTabTitles, periodData, createPeriod} = this.props;
+    const {loadedTab, loadedPeriod, setupTabTitles, periodData} = this.props;
     return (
-      <div>
-        <Loader loaded={loadedTab}>
-          <Tabs // this one to render the tab titles
-            onChange={this.handleChange}
-            value={this.state.slideIndex}
-          >
-            {setupTabTitles.map((data, i) => 
-              <Tab label={data.tabTitle} value={i} key={i}/>
-            )}
-          </Tabs>
-
-          <SwipeableViews // this one to render each tab content
-            index={this.state.slideIndex}
-            onChangeIndex={this.handleChange}
-          >
-            {setupTabTitles.map((data, i) => {
-              if(data.tabTitle == 'Periodic'){
-                return(
-                  <div style={styles.slide}>
-                    <Loader loaded={loadedPeriod}>
-                      <PeriodForm createPeriod={createPeriod} />
-                      <PeriodTable periodData={periodData} />
-                    </Loader>
-                  </div>
-              )}else{
-                return(
-                  <div style={styles.slide}>
-                      test2
-                  </div>
-                )
-              }
-              })         
-            }
-          </SwipeableViews>
-        </Loader>
-      </div>
-    );
+      <MUITabs
+        loadedTab={loadedTab} 
+        loadedPeriod={loadedPeriod}
+        setupTabTitles={setupTabTitles}
+        tabContent={
+          <div>
+            <PeriodForm onSubmit={this.processForm} />
+            <PeriodTable periodData={periodData} onRowSelection={this.onRowSelection}/>
+          </div>
+        }
+      />   
+    )
   }
 }
 

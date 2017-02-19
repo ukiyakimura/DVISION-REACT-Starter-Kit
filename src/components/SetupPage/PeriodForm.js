@@ -13,19 +13,15 @@ class PeriodForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.processForm = this.processForm.bind(this);
     }
 
-    processForm(data) {
-        this.props.createPeriod(data);
-    }
     render(){
 
         const { handleSubmit, pristine, reset, submitting } = this.props;
         return(
             <div>
                 <Card className="container">
-                    <form onSubmit={handleSubmit(this.processForm)}>
+                    <form onSubmit={handleSubmit}>
                         <div className="field-line">
                             <Field 
                                 name="periodName" 
@@ -72,11 +68,6 @@ class PeriodForm extends React.Component {
                                 type="text"
                             />
                         </div>
-
-                        <Field 
-                            name="periodicID" 
-                            component={MUIHiddenTextField} 
-                        />
 
                         <div className="button-line">
                             <RaisedButton

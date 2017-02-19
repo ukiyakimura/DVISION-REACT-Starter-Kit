@@ -20,11 +20,11 @@ export default class PeriodTable extends React.Component {
       deselectOnClickaway: true,
       showCheckboxes: true,
       height: '300px',
-      periodData: this.props.periodData
     };
   }
-
+    
   render() {
+    const {periodData, onRowSelection} = this.props;
     return (
       <div>
           <Table
@@ -33,6 +33,7 @@ export default class PeriodTable extends React.Component {
             fixedFooter={this.state.fixedFooter}
             selectable={this.state.selectable}
             multiSelectable={this.state.multiSelectable}
+            onRowSelection={onRowSelection}
           >
 
             <TableHeader
@@ -61,7 +62,7 @@ export default class PeriodTable extends React.Component {
               showRowHover={this.state.showRowHover}
               stripedRows={this.state.stripedRows}
             >
-              {this.props.periodData.map( (data, index) => {
+              {periodData.map( (data, index) => {
                 let active;
                 if(data.isActive == '1'){
                   active = 'Active'
